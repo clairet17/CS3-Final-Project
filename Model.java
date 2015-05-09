@@ -19,7 +19,7 @@ public class Model
       }  
    }
    
-   public Hand roll(boolean d1, boolean d2, boolean d3, boolean d4, boolean b5)
+   public Die[] roll(boolean d1, boolean d2, boolean d3, boolean d4, boolean b5)
    {
       return players[playerTracker].roll(d1, d2, d3, d4, d5);
    }
