@@ -6,11 +6,16 @@ public class Die
    
    public Die()
    {
-   
+      currentValue=1;
+      random=new Random();
    }
-   public void roll(boolean valid)
+   public void roll(boolean isValid)
    {
-      
+      if(isValid==true)
+      {
+         int temp=random.nextInt(6)+1;
+         currentValue=temp;
+      }
    }
    
    public int getValueOfDie()
