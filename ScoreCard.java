@@ -20,14 +20,19 @@ public class ScoreCard
       
    }
    
-   public void setScore(String scoringLoc, Hand hand)
+   public boolean setScore(String scoringLoc, Hand hand)
    {
       int location=findString(scoringLoc);
       if(location != -1)
       {
          int temp=calcScore(scoringLoc, hand, location);
-         scoreTracker[location][2]=temp; 
+         if(scoreTracker[location][2]==null || scoringLoc.equalsIgnoreCase("YAHTZEE"))
+         {
+            scoreTracker[location][2]=temp;
+            return true;
+         } 
       }
+      return false;
    }
    
    public String[] getPossible()
@@ -45,7 +50,7 @@ public class ScoreCard
       int value=0;
       if(scoreTracker[location][2]==null || scoringLoc.equals("YAHTZEE"))
       {
-         if(scoringLoc.equals("Chance"))
+         if(scoringLoc.equalsIgnoreCase("Chance"))
          {
             value=hand.totalHand();
             return value;
@@ -56,7 +61,7 @@ public class ScoreCard
          }
          else
          {
-            if(scoringLoc.equals("3 of a kind"))
+            if(scoringLoc.equalsIgnoreCase("3 of a kind"))
             {
                for(int three=1; three<7; three++)
                {
@@ -67,7 +72,7 @@ public class ScoreCard
                   }
                }
             }
-            if(scoringLoc.equals("4 of a kind"))
+            if(scoringLoc.equalsIgnoreCase("4 of a kind"))
             {
                for(int four=1; four<7; four++)
                {
@@ -78,7 +83,7 @@ public class ScoreCard
                   }
                }
             }
-            if(scoringLoc.equals("Full House"))//maybe do a good ole ignore case to make more user friendly
+            if(scoringLoc.equalsIgnoreCase("Full House"))//maybe do a good ole ignore case to make more user friendly
             {
                boolean has2=false;
                boolean has3=false;
@@ -93,7 +98,7 @@ public class ScoreCard
                if(has2==true && has3==true)
                   value=25;
             }
-            if(scoringLoc.equals("YAHTZEE"))
+            if(scoringLoc.equalsIgnoreCase("YAHTZEE"))
             {
                for(int Y=1; Y<7; Y++)//possible to eliminate redundancy with refactoring?
                {
@@ -106,20 +111,46 @@ public class ScoreCard
                }
             }
             
-            if(scoringLoc.equals("Sm Straight"))
+            int[] temp=new int[5];
+            for(int set=0; set<6; set++)
             {
-               int[] temp=new int[5];
-               for(int set=0; set<6; set++)
+               if(hand.addUp(set+1)<=1)//removes chance of doubles
                {
-                  if(hand.addUp(set+1)<=1)//removes chance of doubles
+                  temp[set]=hand.getValueOfDie(set);
+               }
+            }
+            Arrays.sort(temp);
+            
+            if(scoringLoc.equalsIgnoreCase("Sm Straight"))
+            {
+               for(int ss=0; ss<3; ss++)
+               {
+                  if(temp[ss] !=0)
                   {
-                     temp[set]=hand.getValueOfDie(set);
+                     if(temp[ss]==temp[ss+1]-1 && temp[ss]==temp[ss+2]-2)
+                     {
+                        value=30;
+                     }
                   }
                }
-               Arrays.sort(temp);
+            }
+            
+            if(scoringLoc.equalsIgnoreCase("Lg Straight"))
+            {
+               for(int ss=0; ss<2; ss++)
+               {
+                  if(temp[ss] !=0)
+                  {
+                     if(temp[ss]==temp[ss+1]-1 && temp[ss]==temp[ss+2]-2 && temp[ss]==temp[ss+3]-3)
+                     {
+                        value=40;
+                     }
+                  }  
+               }      
             }
          }
       }
+      return value;
    }
    
    private int findString(String scoringLoc)

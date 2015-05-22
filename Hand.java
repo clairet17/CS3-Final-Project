@@ -37,7 +37,17 @@ public class Hand
       return counter;
    }
    
-   public Die[] getDie()
+   public int totalHand()
+   {  
+      int sum=0;
+      for(int tt=0; tt<5; tt++)
+      {
+         sum+=hand[tt].getValueOfDie();
+      }
+      return sum;
+   }
+   
+   public Die[] getHand()
    {
       return hand;
    }

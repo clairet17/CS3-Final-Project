@@ -12,12 +12,16 @@ public class Player
    public Die[] roll(boolean d1, boolean d2, boolean d3, boolean d4, boolean d5)
    {
       hand.roll(d1, d2, d3, d4, d5);
-      return hand.getDie();
+      return hand.getHand();
    }
    
-   public void setScore(String scoringLoc)
+   public Die[] getHand()
    {
-      score.setScore(scoringLoc, hand);
+      return hand.getHand();
+   }
+   public boolean setScore(String scoringLoc)
+   {
+      return score.setScore(scoringLoc, hand);
    }
    
    public String[] getPossible()

@@ -19,7 +19,7 @@ public class Model
       }  
    }
    
-   public Die[] roll(boolean d1, boolean d2, boolean d3, boolean d4, boolean b5)
+   public Die[] roll(boolean d1, boolean d2, boolean d3, boolean d4, boolean d5)
    {
       return players[playerTracker].roll(d1, d2, d3, d4, d5);
    }
@@ -36,9 +36,13 @@ public class Model
       }
    }
    
-   public void setScore(String scoringLoc)
+   public Die[] getHand()
    {
-      players[playerTracker].setScore(scoringLoc);
+      return players[playerTracker].getHand();
+   }  
+   public boolean setScore(String scoringLoc)
+   {
+      return players[playerTracker].setScore(scoringLoc);
    }
    
    public String[] getPossible()
@@ -51,19 +55,23 @@ public class Model
       return players[playerTracker].getScoreCard();
    }
    
-   public int getWinner()//must have a way to check for ties(should this return a string)
+   public String getWinner()//must have a way to check for ties(should this return a string)
    {
       int player=0;
       int highest=0;
       for(int ww=0; ww<players.length; ww++)
       {
-         int playerScore=players[ii].getScore();
+         int playerScore=players[ww].getScore();
          if(playerScore>highest)
          {
             highest=playerScore;
-            player=ii;
+            player=ww;
          }
       }
-      return player+1;
+      return "Player " +player+"! Score: "+highest;
+   }
+   public int getScore()
+   {
+      return players[playerTracker].getScore();
    }
 }
